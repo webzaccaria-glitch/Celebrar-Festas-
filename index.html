@@ -539,7 +539,7 @@ function Celebrar() {
     const {data, error} = await sb_client
       .from('clientes')
       .select('*')
-      .eq('user_id', session.user.id)
+      
       .order('data_evento', {ascending:true});
     if(!error && data) {
       setClients(data.map(r=>({
@@ -565,7 +565,6 @@ function Celebrar() {
   /* ── CRUD ── */
   const addClient = async (c) => {
     const row = {
-      user_id: session.user.id,
       nome: c.nome,
       telefone: c.tel,
       bairro: c.bairro,
@@ -677,7 +676,6 @@ function Celebrar() {
         const data = JSON.parse(e.target.result);
         if(!Array.isArray(data)||data.length===0){showMsg('❌ Arquivo inválido');return;}
         const rows = data.map(c=>({
-          user_id: session.user.id,
           nome: c.nome, telefone: c.tel, bairro: c.bairro,
           data_evento: c.data, tipo: c.tipo,
           valor_total: c.vf, valor_recebido: c.vp||0, gastos: c.gastos||[]
