@@ -749,7 +749,7 @@ function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
             Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase'}},'🎈 Balões deste Evento'),
             Div({style:{display:'flex',flexWrap:'wrap',gap:6}},
               MODELOS_BALAO.filter(m=>!(lc.baloes||{})[m]).map(m=>
-                Btn({key:m,onClick:()=>sv2({...lc,baloes:{...(lc.baloes||{}),[m]:{itens:[]}}}),style:bs({background:C.card2,color:C.txt,border:'1px solid '+C.bdr,padding:'4px 10px',fontSize:11})},'+ '+m)
+                Btn({key:m,onClick:()=>setLc({...lc,baloes:{...(lc.baloes||{}),[m]:{itens:[]}}}),style:bs({background:C.card2,color:C.txt,border:'1px solid '+C.bdr,padding:'4px 10px',fontSize:11})},'+ '+m)
               )
             )
           ),
@@ -758,35 +758,42 @@ function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
             key:modelo,modelo,sel,
             onAddTam:()=>{
               const its=[...(sel.itens||[]),{tamanho:TAMANHOS_BALAO[0],qtd:1,cor:''}];
-              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
+              setLc({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
             },
             onUpdateTam:(idx,field,val)=>{
               const its=[...(sel.itens||[])];
               its[idx]={...its[idx],[field]:val};
-              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
+              setLc({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
             },
             onRemoveTam:idx=>{
               const its=(sel.itens||[]).filter((_,i)=>i!==idx);
-              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
+              setLc({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
             },
-            onRemover:()=>{const n={...lc.baloes};delete n[modelo];sv2({...lc,baloes:n});}
+            onRemover:()=>{const n={...lc.baloes};delete n[modelo];setLc({...lc,baloes:n});}
           })),
-          Object.keys(lc.baloes||{}).length>0&&Btn({
-            onClick:()=>{
-              let msg='🎈 *Balões — '+lc.nome+'*\n\n';
-              Object.entries(lc.baloes||{}).forEach(([modelo,sel])=>{
-                const itens=(sel.itens||[]).filter(it=>it.tamanho);
-                if(!itens.length)return;
-                msg+='*'+modelo+'*\n';
-                itens.forEach(it=>{
-                  msg+=it.tamanho+' x'+(it.qtd||1)+(it.cor&&it.cor.trim()?' - '+it.cor.trim():'')+'\n';
+          Object.keys(lc.baloes||{}).length>0&&Div({style:{display:'flex',gap:8,marginTop:8}},
+            Btn({
+              onClick:async()=>{setSv(true);await sv2(lc);setSv(false);},
+              disabled:sv,
+              style:bs({background:C.gold,color:'#000',flex:1,padding:'11px',fontSize:13,fontWeight:800,opacity:sv?0.6:1})
+            },sv?'Salvando…':'💾 Salvar Balões'),
+            Btn({
+              onClick:()=>{
+                let msg='🎈 *Balões — '+lc.nome+'*\n\n';
+                Object.entries(lc.baloes||{}).forEach(([modelo,sel])=>{
+                  const itens=(sel.itens||[]).filter(it=>it.tamanho);
+                  if(!itens.length)return;
+                  msg+='*'+modelo+'*\n';
+                  itens.forEach(it=>{
+                    msg+=it.tamanho+' x'+(it.qtd||1)+(it.cor&&it.cor.trim()?' - '+it.cor.trim():'')+'\n';
+                  });
+                  msg+='\n';
                 });
-                msg+='\n';
-              });
-              window.open('https://wa.me/?text='+encodeURIComponent(msg.trim()),'_blank');
-            },
-            style:bs({background:'#25D366',color:'#fff',width:'100%',padding:'11px',fontSize:13,marginTop:8,display:'flex',alignItems:'center',justifyContent:'center',gap:8})
-          },Span({style:{fontSize:16}},'📱'),'Disparar Balões no WhatsApp')
+                window.open('https://wa.me/?text='+encodeURIComponent(msg.trim()),'_blank');
+              },
+              style:bs({background:'#25D366',color:'#fff',flex:1,padding:'11px',fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',gap:8})
+            },Span({style:{fontSize:16}},'📱'),'Disparar no WhatsApp')
+          )
         ),
         Div({style:{marginBottom:16}},
           Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:10}},'💸 Gastos Extras'),
