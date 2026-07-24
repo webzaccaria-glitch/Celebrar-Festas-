@@ -745,6 +745,40 @@ function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
           )
         ),
         Div({style:{marginBottom:16}},
+          Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}},
+            Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase'}},'🎈 Balões deste Evento'),
+            Div({style:{display:'flex',flexWrap:'wrap',gap:6}},
+              MODELOS_BALAO.filter(m=>!(lc.baloes||{})[m]).map(m=>
+                Btn({key:m,onClick:()=>sv2({...lc,baloes:{...(lc.baloes||{}),[m]:{tamanhos:[],cor:''}}}),style:bs({background:C.card2,color:C.txt,border:'1px solid '+C.bdr,padding:'4px 10px',fontSize:11})},'+ '+m)
+              )
+            )
+          ),
+          Object.keys(lc.baloes||{}).length===0?Div({style:{fontSize:12,color:C.dim}},'Nenhum balão selecionado para este evento')
+          :Object.entries(lc.baloes||{}).map(([modelo,sel])=>e(ModeloBalaoCard,{
+            key:modelo,modelo,sel,
+            onToggleTam:t=>{
+              const at=(sel.tamanhos||[]);
+              const nt=at.includes(t)?at.filter(x=>x!==t):[...at,t];
+              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,tamanhos:nt}}});
+            },
+            onCor:v=>sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,cor:v}}}),
+            onRemover:()=>{const n={...lc.baloes};delete n[modelo];sv2({...lc,baloes:n});}
+          })),
+          Object.keys(lc.baloes||{}).length>0&&Btn({
+            onClick:()=>{
+              let msg='🎈 *Balões — '+lc.nome+'*\n\n';
+              Object.entries(lc.baloes||{}).forEach(([modelo,sel])=>{
+                if(!(sel.tamanhos||[]).length)return;
+                msg+='*'+modelo+'*\nTamanhos: '+sel.tamanhos.join(', ')+'\n';
+                if(sel.cor?.trim())msg+='Cor: '+sel.cor.trim()+'\n';
+                msg+='\n';
+              });
+              window.open('https://wa.me/?text='+encodeURIComponent(msg.trim()),'_blank');
+            },
+            style:bs({background:'#25D366',color:'#fff',width:'100%',padding:'11px',fontSize:13,marginTop:8,display:'flex',alignItems:'center',justifyContent:'center',gap:8})
+          },Span({style:{fontSize:16}},'📱'),'Disparar Balões no WhatsApp')
+        ),
+        Div({style:{marginBottom:16}},
           Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:10}},'💸 Gastos Extras'),
           (lc.gastos||[]).length===0?Div({style:{fontSize:12,color:C.dim,marginBottom:10}},'Nenhum gasto registrado')
           :Div({style:{marginBottom:10}},
@@ -965,58 +999,6 @@ function ModeloBalaoCard({modelo,sel,onToggleTam,onCor,onRemover}){
     ),
     Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:6}},'📝 Cor / Anotação'),
     Inp({placeholder:'Ex: dourado e branco...',value:sel.cor||'',onChange:ev=>onCor(ev.target.value),style:is()})
-  );
-}
-function BaloesTab(){
-  const [selecionados,setSel]=useState({});
-  const modelosAtivos=Object.keys(selecionados);
-  const addModelo=m=>{if(selecionados[m])return;setSel(p=>({...p,[m]:{tamanhos:[],cor:''}}));};
-  const removerModelo=m=>setSel(p=>{const n={...p};delete n[m];return n;});
-  const toggleTam=(m,t)=>setSel(p=>{
-    const at=p[m].tamanhos||[];
-    const nt=at.includes(t)?at.filter(x=>x!==t):[...at,t];
-    return{...p,[m]:{...p[m],tamanhos:nt}};
-  });
-  const setCor=(m,v)=>setSel(p=>({...p,[m]:{...p[m],cor:v}}));
-  const temAlgo=modelosAtivos.some(m=>(selecionados[m].tamanhos||[]).length>0);
-  const montarMsg=()=>{
-    let msg='🎈 *Pedido de Balões*\n\n';
-    modelosAtivos.forEach(m=>{
-      const s=selecionados[m];
-      if(!(s.tamanhos||[]).length)return;
-      msg+='*'+m+'*\nTamanhos: '+s.tamanhos.join(', ')+'\n';
-      if(s.cor?.trim())msg+='Cor: '+s.cor.trim()+'\n';
-      msg+='\n';
-    });
-    return msg.trim();
-  };
-  const disparar=()=>{
-    const txt=encodeURIComponent(montarMsg());
-    window.open('https://wa.me/?text='+txt,'_blank');
-  };
-  return Div({style:{padding:'16px 16px 80px'}},
-    Div({style:{fontWeight:800,fontSize:18,color:C.gold,marginBottom:6}},'🎈 Lançamento de Balões'),
-    Div({style:{fontSize:12,color:C.dim,marginBottom:20}},'Selecione um ou mais modelos, marque os tamanhos e a cor de cada um.'),
-    Div({style:{...cs(),padding:'14px 16px',marginBottom:16}},
-      Div({style:{fontWeight:700,marginBottom:10,fontSize:13}},'Modelos'),
-      Div({style:{display:'flex',flexWrap:'wrap',gap:8}},
-        MODELOS_BALAO.map(m=>{
-          const on=!!selecionados[m];
-          return Btn({key:m,onClick:()=>on?removerModelo(m):addModelo(m),style:bs({background:on?C.gold:C.card2,color:on?'#000':C.txt,border:'1px solid '+(on?C.gold:C.bdr),padding:'8px 16px',fontSize:13})},(on?'✓ ':'+ ')+m);
-        })
-      )
-    ),
-    modelosAtivos.length===0?Div({style:{textAlign:'center',padding:'40px',color:C.dim}},'Selecione um modelo acima para começar. 🎈')
-    :modelosAtivos.map(m=>e(ModeloBalaoCard,{
-      key:m,modelo:m,sel:selecionados[m],
-      onToggleTam:t=>toggleTam(m,t),
-      onCor:v=>setCor(m,v),
-      onRemover:()=>removerModelo(m)
-    })),
-    modelosAtivos.length>0&&Btn({
-      onClick:disparar,disabled:!temAlgo,
-      style:bs({background:temAlgo?'#25D366':'#333',color:temAlgo?'#fff':C.dim,width:'100%',padding:'14px',fontSize:14,marginTop:8,display:'flex',alignItems:'center',justifyContent:'center',gap:8,opacity:temAlgo?1:0.6})
-    },Span({style:{fontSize:18}},'📱'),'Disparar no WhatsApp')
   );
 }
 /* ════ PEGUE E MONTE TAB ════ */
@@ -1493,7 +1475,7 @@ function App(){
   const loadC=async()=>{
     setDbL(true);
     const{data,error}=await sb.from('clientes').select('*').order('data_evento',{ascending:true});
-    if(!error&&data)setClients(data.map(r=>({id:r.id,nome:r.nome,tel:r.telefone,bairro:r.bairro,data:r.data_evento,tipo:r.tipo,vf:r.valor_total,vp:r.valor_recebido,gastos:r.gastos||[],acervo_utilizado:r.acervo_utilizado||[],finalizado:r.finalizado||false,anotacoes:r.anotacoes||''})));
+    if(!error&&data)setClients(data.map(r=>({id:r.id,nome:r.nome,tel:r.telefone,bairro:r.bairro,data:r.data_evento,tipo:r.tipo,vf:r.valor_total,vp:r.valor_recebido,gastos:r.gastos||[],acervo_utilizado:r.acervo_utilizado||[],finalizado:r.finalizado||false,anotacoes:r.anotacoes||'',baloes:r.baloes||{}})));
     setDbL(false);
   };
   const loadPM=async()=>{
@@ -1527,19 +1509,20 @@ function App(){
     else{setSenhaErr(true);}
   };
   const addClient=async c=>{
-    const{data,error}=await sb.from('clientes').insert([{nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:false,anotacoes:c.anotacoes||''}]).select().single();
-    if(!error){setClients(p=>[...p,{id:data.id,nome:data.nome,tel:data.telefone,bairro:data.bairro,data:data.data_evento,tipo:data.tipo,vf:data.valor_total,vp:data.valor_recebido,gastos:data.gastos||[],acervo_utilizado:data.acervo_utilizado||[],finalizado:false}]);toast('✅ Evento adicionado!');}
+    const{data,error}=await sb.from('clientes').insert([{nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:false,anotacoes:c.anotacoes||'',baloes:c.baloes||{}}]).select().single();
+    if(!error){setClients(p=>[...p,{id:data.id,nome:data.nome,tel:data.telefone,bairro:data.bairro,data:data.data_evento,tipo:data.tipo,vf:data.valor_total,vp:data.valor_recebido,gastos:data.gastos||[],acervo_utilizado:data.acervo_utilizado||[],finalizado:false,baloes:data.baloes||{}}]);toast('✅ Evento adicionado!');}
     else toast('❌ Erro: '+error.message);
     setShAdd(false);
   };
   const saveEdit=async c=>{
-    const{error}=await sb.from('clientes').update({nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||''}).eq('id',c.id);
+    const{error}=await sb.from('clientes').update({nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||'',baloes:c.baloes||{}}).eq('id',c.id);
     if(!error){setClients(p=>p.map(x=>x.id===c.id?{...c}:x));toast('✅ Salvo!');}
     else toast('❌ Erro: '+error.message);
     setEditC(null);
   };
   const saveCF=async c=>{
-    await sb.from('clientes').update({gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||''}).eq('id',c.id);
+    const{error}=await sb.from('clientes').update({gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||'',baloes:c.baloes||{}}).eq('id',c.id);
+    if(error){toast('❌ Erro ao salvar: '+error.message);return;}
     setClients(p=>p.map(x=>x.id===c.id?{...c}:x));
   };
   const addPM=async c=>{
@@ -1561,7 +1544,7 @@ function App(){
   const logout=async()=>{await sb.auth.signOut();setClients([]);setContratos([]);setAcervo([]);};
   if(aL)return Div({style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',gap:12,color:C.dim}},Div({style:{fontSize:48}},'🎉'),Div(null,'Carregando...'));
   if(!ses)return e(Login);
-  const tabs=[{k:'dashboard',l:'📊 Dashboard'},{k:'eventos',l:'🎉 Eventos'},{k:'pegue-monte',l:'📦 Pegue e Monte'},{k:'baloes',l:'🎈 Balões'},{k:'acervo',l:'🗃️ Acervo'},{k:'backup',l:'💾 Backup'}];
+  const tabs=[{k:'dashboard',l:'📊 Dashboard'},{k:'eventos',l:'🎉 Eventos'},{k:'pegue-monte',l:'📦 Pegue e Monte'},{k:'acervo',l:'🗃️ Acervo'},{k:'backup',l:'💾 Backup'}];
   return Div({style:{minHeight:'100vh',background:C.bg}},
     msg&&Div({style:{position:'fixed',top:12,left:'50%',transform:'translateX(-50%)',background:msg.startsWith('✅')?C.grn:msg.startsWith('❌')?C.red:C.org,color:'#fff',padding:'10px 22px',borderRadius:20,fontWeight:700,fontSize:13,zIndex:9000,whiteSpace:'nowrap',boxShadow:'0 4px 20px rgba(0,0,0,.4)'}},msg),
     Div({style:{background:C.card2,borderBottom:'1px solid '+C.bdr,padding:'12px 16px',position:'sticky',top:0,zIndex:100,display:'flex',alignItems:'center',gap:12}},
@@ -1575,7 +1558,6 @@ function App(){
     tab==='dashboard'&&e(Dash,{clients}),
     tab==='eventos'&&e(Eventos,{clients,onSel:setSel,onAdd:pedirSenha}),
     tab==='pegue-monte'&&e(PMTab,{contratos,onSel:setSelPM,onAdd:()=>setShAddPM(true),kits,onUpd:saveKits}),
-    tab==='baloes'&&e(BaloesTab),
     tab==='acervo'&&e(AcervoTab,{acervo,onUpd:saveAc,clients}),
     tab==='backup'&&e(Backup,{clients,session:ses,onRel:loadC,loading:dbL}),
     tab==='eventos'&&Btn({onClick:pedirSenha,style:{position:'fixed',bottom:24,right:20,width:56,height:56,borderRadius:'50%',background:C.gold,color:'#000',border:'none',fontSize:30,cursor:'pointer',zIndex:200,boxShadow:'0 4px 20px '+C.gold+'66',display:'flex',alignItems:'center',justifyContent:'center'}},'+'),
