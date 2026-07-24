@@ -749,28 +749,38 @@ function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
             Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase'}},'🎈 Balões deste Evento'),
             Div({style:{display:'flex',flexWrap:'wrap',gap:6}},
               MODELOS_BALAO.filter(m=>!(lc.baloes||{})[m]).map(m=>
-                Btn({key:m,onClick:()=>sv2({...lc,baloes:{...(lc.baloes||{}),[m]:{tamanhos:[],cor:''}}}),style:bs({background:C.card2,color:C.txt,border:'1px solid '+C.bdr,padding:'4px 10px',fontSize:11})},'+ '+m)
+                Btn({key:m,onClick:()=>sv2({...lc,baloes:{...(lc.baloes||{}),[m]:{itens:[]}}}),style:bs({background:C.card2,color:C.txt,border:'1px solid '+C.bdr,padding:'4px 10px',fontSize:11})},'+ '+m)
               )
             )
           ),
           Object.keys(lc.baloes||{}).length===0?Div({style:{fontSize:12,color:C.dim}},'Nenhum balão selecionado para este evento')
           :Object.entries(lc.baloes||{}).map(([modelo,sel])=>e(ModeloBalaoCard,{
             key:modelo,modelo,sel,
-            onToggleTam:t=>{
-              const at=(sel.tamanhos||[]);
-              const nt=at.includes(t)?at.filter(x=>x!==t):[...at,t];
-              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,tamanhos:nt}}});
+            onAddTam:()=>{
+              const its=[...(sel.itens||[]),{tamanho:TAMANHOS_BALAO[0],qtd:1,cor:''}];
+              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
             },
-            onCor:v=>sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,cor:v}}}),
+            onUpdateTam:(idx,field,val)=>{
+              const its=[...(sel.itens||[])];
+              its[idx]={...its[idx],[field]:val};
+              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
+            },
+            onRemoveTam:idx=>{
+              const its=(sel.itens||[]).filter((_,i)=>i!==idx);
+              sv2({...lc,baloes:{...lc.baloes,[modelo]:{...sel,itens:its}}});
+            },
             onRemover:()=>{const n={...lc.baloes};delete n[modelo];sv2({...lc,baloes:n});}
           })),
           Object.keys(lc.baloes||{}).length>0&&Btn({
             onClick:()=>{
               let msg='🎈 *Balões — '+lc.nome+'*\n\n';
               Object.entries(lc.baloes||{}).forEach(([modelo,sel])=>{
-                if(!(sel.tamanhos||[]).length)return;
-                msg+='*'+modelo+'*\nTamanhos: '+sel.tamanhos.join(', ')+'\n';
-                if(sel.cor?.trim())msg+='Cor: '+sel.cor.trim()+'\n';
+                const itens=(sel.itens||[]).filter(it=>it.tamanho);
+                if(!itens.length)return;
+                msg+='*'+modelo+'*\n';
+                itens.forEach(it=>{
+                  msg+=it.tamanho+' x'+(it.qtd||1)+(it.cor&&it.cor.trim()?' - '+it.cor.trim():'')+'\n';
+                });
                 msg+='\n';
               });
               window.open('https://wa.me/?text='+encodeURIComponent(msg.trim()),'_blank');
@@ -984,21 +994,26 @@ function AcervoTab({acervo,onUpd,clients}){
 /* ════ BALÕES TAB ════ */
 const MODELOS_BALAO=['PIC PIC','ARTLATEX','SÃO ROQUE','BUBBLE'];
 const TAMANHOS_BALAO=['5\"','8\"','9\"','10\"','12\"','14\"','16\"','18\"','20\"','22\"','24\"','26\"'];
-function ModeloBalaoCard({modelo,sel,onToggleTam,onCor,onRemover}){
+function ModeloBalaoCard({modelo,sel,onAddTam,onUpdateTam,onRemoveTam,onRemover}){
+  const itens=sel.itens||[];
   return Div({style:{...cs({background:C.card2,border:'1px solid '+C.pur+'44'}),padding:'14px 16px',marginBottom:12}},
     Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}},
       Span({style:{fontWeight:800,fontSize:14,color:C.pur}},'🎈 '+modelo),
       Btn({onClick:onRemover,style:bs({background:'transparent',color:C.dim,padding:'2px 8px',fontSize:14})},'✕')
     ),
-    Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:8}},'Tamanhos'),
-    Div({style:{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}},
-      TAMANHOS_BALAO.map(t=>{
-        const on=(sel.tamanhos||[]).includes(t);
-        return Btn({key:t,onClick:()=>onToggleTam(t),style:bs({background:on?C.pur:C.card3,color:on?'#fff':C.dim,border:'1px solid '+(on?C.pur:C.bdr),padding:'6px 12px',fontSize:12,borderRadius:20})},t);
-      })
+    Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:8}},'Tamanhos selecionados'),
+    itens.length===0?Div({style:{fontSize:12,color:C.dim,marginBottom:10}},'Nenhum tamanho adicionado')
+    :Div({style:{marginBottom:10}},
+      itens.map((it,idx)=>Div({key:idx,style:{display:'flex',gap:6,alignItems:'center',marginBottom:8,flexWrap:'wrap'}},
+        Sel({value:it.tamanho,onChange:ev=>onUpdateTam(idx,'tamanho',ev.target.value),style:{...is(),width:80,flex:'0 0 80px'}},
+          TAMANHOS_BALAO.map(t=>Opt({key:t,value:t},t))
+        ),
+        Inp({type:'number',min:1,value:it.qtd||1,onChange:ev=>onUpdateTam(idx,'qtd',parseInt(ev.target.value)||1),style:{...is(),width:70,flex:'0 0 70px'},placeholder:'Qtd'}),
+        Inp({placeholder:'Cor deste tamanho...',value:it.cor||'',onChange:ev=>onUpdateTam(idx,'cor',ev.target.value),style:{...is(),flex:'1 1 120px'}}),
+        Btn({onClick:()=>onRemoveTam(idx),style:bs({background:'transparent',color:C.dim,padding:'2px 8px',fontSize:14})},'✕')
+      ))
     ),
-    Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:6}},'📝 Cor / Anotação'),
-    Inp({placeholder:'Ex: dourado e branco...',value:sel.cor||'',onChange:ev=>onCor(ev.target.value),style:is()})
+    Btn({onClick:onAddTam,style:bs({background:C.card3,color:C.txt,border:'1px solid '+C.bdr,padding:'6px 12px',fontSize:12})},'+ Adicionar Tamanho')
   );
 }
 /* ════ PEGUE E MONTE TAB ════ */
