@@ -42,7 +42,6 @@
     <p style="margin-top:16px;color:#aaa">Tire um print desta tela e envie para suporte.</p>
   </div>
   <div id="root"></div>
-
   <script>
     window.addEventListener('error',function(e){
       if(e.filename&&(e.filename.includes('chrome-extension://')||e.filename.includes('moz-extension://')))return;
@@ -60,7 +59,6 @@
       box.style.display='block';
     });
   </script>
-
   <!-- React 18 embutido -->
   <script>/**
  * @license React
@@ -94,7 +92,6 @@ c.useEffect=function(a,b){return g.current.useEffect(a,b)};c.useId=function(){re
 c.useState=function(a){return g.current.useState(a)};c.useSyncExternalStore=function(a,b,c){return g.current.useSyncExternalStore(a,b,c)};c.useTransition=function(){return g.current.useTransition()};c.version="18.3.1"});
 })();
 </script>
-
   <!-- ReactDOM 18 embutido -->
   <script>/**
  * @license React
@@ -364,13 +361,10 @@ var d=null!=c&&c.hydratedSources||null,e=!1,f="",g=aj;null!==c&&void 0!==c&&(!0=
 function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmountComponentAtNode=function(a){if(!Vd(a))throw Error(m(40));return a._reactRootContainer?(yb(function(){Wd(null,null,a,!1,function(){a._reactRootContainer=null;a[Ja]=null})}),!0):!1};Q.unstable_batchedUpdates=Tf;Q.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!Vd(c))throw Error(m(200));if(null==a||void 0===a._reactInternals)throw Error(m(38));return Wd(a,b,c,!1,d)};Q.version="18.3.1-next-f1338f8080-20240426"});
 })();
 </script>
-
-
   <!-- Supabase via CDN (necessário para banco de dados e login) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
     onerror="document.getElementById('offline-msg').style.display='flex'">
   </script>
-
   <!-- Aviso offline -->
   <div id="offline-msg" style="display:none;position:fixed;inset:0;background:#07041a;
     flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;z-index:9999">
@@ -385,15 +379,12 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
       🔄 Tentar Novamente
     </button>
   </div>
-
   <script>
-
 const {useState,useEffect}=React;
 const SURL='https://oufzakrimlkyovfsjmxe.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91Znpha3JpbWxreW92ZnNqbXhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4Njc4MTQsImV4cCI6MjA5NzQ0MzgxNH0.KU-GJq1qyfidnINd6CuQpgTJM7jUwvB9wTFLBOBTIzw';
 const sb=supabase.createClient(SURL,SKEY);
 const e=React.createElement;
-
 const C={
   bg:'#07041a',card:'#0f0b2e',card2:'#160d3a',card3:'#1e1248',
   bdr:'#2a1f5a',gold:'#f0b429',
@@ -408,7 +399,6 @@ const C={
   pnk:'#ec4899',pnkB:'rgba(236,72,153,.13)',
   gry:'#6b7280',gryB:'rgba(107,114,128,.13)',
 };
-
 const fmt=v=>v!=null?'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—';
 const pd=d=>{if(!d)return null;const p=d.split('/');return p.length===3?new Date(+p[2],+p[1]-1,+p[0]):null;};
 const mk=d=>{const t=pd(d);if(!t)return'9999-99';return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0');};
@@ -427,7 +417,6 @@ const gst=c=>{
 const cs=(x)=>Object.assign({background:C.card,border:'1px solid '+C.bdr,borderRadius:16},x||{});
 const bs=(x)=>Object.assign({border:'none',borderRadius:10,padding:'8px 16px',fontWeight:700,fontSize:13,cursor:'pointer'},x||{});
 const is=(x)=>Object.assign({width:'100%',background:C.card2,border:'1px solid '+C.bdr,borderRadius:10,padding:'10px 14px',color:C.txt,fontSize:14,outline:'none'},x||{});
-
 /* ─ helpers ─ */
 function Div(props,...ch){return e('div',props,...ch);}
 function Btn(props,...ch){return e('button',props,...ch);}
@@ -437,7 +426,9 @@ function Opt(props,...ch){return e('option',props,...ch);}
 function Lbl(props,...ch){return e('label',props,...ch);}
 function Span(props,...ch){return e('span',props,...ch);}
 function Txt(props,...ch){return e('textarea',props,...ch);}
-
+/* ════ helpers de data (DD/MM/AAAA <-> AAAA-MM-DD) ════ */
+const toISO=d=>{if(!d)return'';const p=d.split('/');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:'';};
+const toBR=d=>{if(!d)return'';const p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:'';};
 /* ════ LOGIN ════ */
 function Login(){
   const [L,sL]=useState(false);
@@ -468,7 +459,6 @@ function Login(){
     )
   );
 }
-
 /* ════ DASHBOARD ════ */
 function Dash({clients}){
   const now=new Date();now.setHours(0,0,0,0);
@@ -547,7 +537,6 @@ function Dash({clients}){
     )
   );
 }
-
 /* ════ EVENT CARD ════ */
 function ECard({c,onClick}){
   const st=gst(c),g=tg(c);
@@ -580,7 +569,6 @@ function ECard({c,onClick}){
           )
   );
 }
-
 /* ════ EVENTOS TAB ════ */
 function Eventos({clients,onSel,onAdd}){
   const [sq,setSq]=useState('');
@@ -638,7 +626,6 @@ function Eventos({clients,onSel,onAdd}){
     )
   );
 }
-
 /* ════ FIELD SECTION (shared) ════ */
 function AcervoSel({acervo,onAdd}){
   const [sM,setSM]=useState('');
@@ -681,7 +668,6 @@ function AcervoSel({acervo,onAdd}){
     )
   );
 }
-
 /* ════ CLIENT MODAL ════ */
 function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
   const [lc,setLc]=useState({...c,gastos:[...(c.gastos||[])],acervo_utilizado:[...(c.acervo_utilizado||[])]});
@@ -808,29 +794,44 @@ function CModal({c,onClose,onEdit,onDel,onSave,acervo}){
     )
   );
 }
-
 /* ════ FORM MODAL (Evento) ════ */
 function FModal({init,onSave,onClose,title}){
   const [f,setF]=useState(init);
   const set=(k,v)=>setF(p=>({...p,[k]:v}));
   const ok=f.nome?.trim()&&f.data?.trim();
-  const flds=[
-    {k:'nome',lb:'Nome *',t:'text'},{k:'tel',lb:'Telefone',t:'tel'},
-    {k:'bairro',lb:'Bairro / Local',t:'text'},{k:'data',lb:'Data * (DD/MM/AAAA)',t:'text',ph:'20/06/2026'},
-    {k:'tipo',lb:'Tipo de Festa',t:'text'},{k:'vf',lb:'Valor do Contrato (R$)',t:'number'},
-    {k:'vp',lb:'Já Recebido (R$)',t:'number'}
-  ];
   return Div({style:{position:'fixed',inset:0,background:'rgba(0,0,0,.92)',zIndex:350,overflowY:'auto',padding:'16px 12px'},onClick:ev=>{if(ev.target===ev.currentTarget)onClose();}},
     Div({style:{...cs(),maxWidth:440,margin:'0 auto',padding:'20px 18px'}},
       Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}},
         Div({style:{fontWeight:800,fontSize:18,color:C.gold}},title),
         Btn({onClick:onClose,style:bs({background:'transparent',color:C.dim,fontSize:22,padding:'4px 8px'})},'✕')
       ),
-      ...flds.map(({k,lb,t,ph})=>
-        Div({key:k,style:{marginBottom:10}},
-          Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},lb),
-          Inp({type:t,value:f[k]??'',placeholder:ph||'',onChange:ev=>set(k,t==='number'?ev.target.value===''?null:+ev.target.value:ev.target.value),style:is(),inputMode:t==='number'?'decimal':t==='tel'?'tel':'text'})
-        )
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Nome *'),
+        Inp({type:'text',value:f.nome??'',onChange:ev=>set('nome',ev.target.value),style:is()})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'📅 Data do Evento *'),
+        Inp({type:'date',value:toISO(f.data||''),onChange:ev=>set('data',toBR(ev.target.value)),style:{...is(),colorScheme:'dark',cursor:'pointer'}})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Telefone'),
+        Inp({type:'tel',value:f.tel??'',onChange:ev=>set('tel',ev.target.value),style:is(),inputMode:'tel'})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Bairro / Local'),
+        Inp({type:'text',value:f.bairro??'',onChange:ev=>set('bairro',ev.target.value),style:is()})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Tipo de Festa'),
+        Inp({type:'text',value:f.tipo??'',onChange:ev=>set('tipo',ev.target.value),style:is()})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Valor do Contrato (R$)'),
+        Inp({type:'number',value:f.vf??'',onChange:ev=>set('vf',ev.target.value===''?null:+ev.target.value),style:is(),inputMode:'decimal'})
+      ),
+      Div({style:{marginBottom:10}},
+        Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Já Recebido (R$)'),
+        Inp({type:'number',value:f.vp??'',onChange:ev=>set('vp',ev.target.value===''?null:+ev.target.value),style:is(),inputMode:'decimal'})
       ),
       Div({style:{display:'flex',gap:8,marginTop:20}},
         Btn({onClick:()=>onSave({...f,gastos:f.gastos||[],acervo_utilizado:f.acervo_utilizado||[]}),disabled:!ok,style:bs({flex:1,background:ok?C.gold:'#333',color:ok?'#000':C.dim,padding:'13px',fontSize:14})},'💾 Salvar'),
@@ -839,7 +840,6 @@ function FModal({init,onSave,onClose,title}){
     )
   );
 }
-
 /* ════ ACERVO TAB ════ */
 function AcervoTab({acervo,onUpd,clients}){
   const [nM,setNM]=useState('');
@@ -850,8 +850,6 @@ function AcervoTab({acervo,onUpd,clients}){
   const [nSQ,setNSQ]=useState({});
   const [sv,setSv]=useState(false);
   const tog=id=>setExp(p=>({...p,[id]:!p[id]}));
-
-  // Demand calculation
   const dem={};
   clients.filter(c=>!c.finalizado).forEach(c=>{
     (c.acervo_utilizado||[]).forEach(a=>{
@@ -862,7 +860,6 @@ function AcervoTab({acervo,onUpd,clients}){
   });
   const dl=Object.values(dem).sort((a,b)=>b.count-a.count);
   const mx=dl.length>0?dl[0].count:1;
-
   return Div({style:{padding:'16px 16px 80px'}},
     Div({style:{fontWeight:800,fontSize:18,color:C.gold,marginBottom:20}},'📦 Acervo de Materiais'),
     dl.length>0&&Div({style:{...cs({background:C.card2,border:'1px solid '+C.pur+'44'}),padding:'16px',marginBottom:20}},
@@ -950,7 +947,78 @@ function AcervoTab({acervo,onUpd,clients}){
     )
   );
 }
-
+/* ════ BALÕES TAB ════ */
+const MODELOS_BALAO=['PIC PIC','ARTLATEX','SÃO ROQUE','BUBBLE'];
+const TAMANHOS_BALAO=['5\"','8\"','9\"','10\"','12\"','14\"','16\"','18\"','20\"','22\"','24\"','26\"'];
+function ModeloBalaoCard({modelo,sel,onToggleTam,onCor,onRemover}){
+  return Div({style:{...cs({background:C.card2,border:'1px solid '+C.pur+'44'}),padding:'14px 16px',marginBottom:12}},
+    Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}},
+      Span({style:{fontWeight:800,fontSize:14,color:C.pur}},'🎈 '+modelo),
+      Btn({onClick:onRemover,style:bs({background:'transparent',color:C.dim,padding:'2px 8px',fontSize:14})},'✕')
+    ),
+    Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:8}},'Tamanhos'),
+    Div({style:{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}},
+      TAMANHOS_BALAO.map(t=>{
+        const on=(sel.tamanhos||[]).includes(t);
+        return Btn({key:t,onClick:()=>onToggleTam(t),style:bs({background:on?C.pur:C.card3,color:on?'#fff':C.dim,border:'1px solid '+(on?C.pur:C.bdr),padding:'6px 12px',fontSize:12,borderRadius:20})},t);
+      })
+    ),
+    Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:6}},'📝 Cor / Anotação'),
+    Inp({placeholder:'Ex: dourado e branco...',value:sel.cor||'',onChange:ev=>onCor(ev.target.value),style:is()})
+  );
+}
+function BaloesTab(){
+  const [selecionados,setSel]=useState({});
+  const modelosAtivos=Object.keys(selecionados);
+  const addModelo=m=>{if(selecionados[m])return;setSel(p=>({...p,[m]:{tamanhos:[],cor:''}}));};
+  const removerModelo=m=>setSel(p=>{const n={...p};delete n[m];return n;});
+  const toggleTam=(m,t)=>setSel(p=>{
+    const at=p[m].tamanhos||[];
+    const nt=at.includes(t)?at.filter(x=>x!==t):[...at,t];
+    return{...p,[m]:{...p[m],tamanhos:nt}};
+  });
+  const setCor=(m,v)=>setSel(p=>({...p,[m]:{...p[m],cor:v}}));
+  const temAlgo=modelosAtivos.some(m=>(selecionados[m].tamanhos||[]).length>0);
+  const montarMsg=()=>{
+    let msg='🎈 *Pedido de Balões*\n\n';
+    modelosAtivos.forEach(m=>{
+      const s=selecionados[m];
+      if(!(s.tamanhos||[]).length)return;
+      msg+='*'+m+'*\nTamanhos: '+s.tamanhos.join(', ')+'\n';
+      if(s.cor?.trim())msg+='Cor: '+s.cor.trim()+'\n';
+      msg+='\n';
+    });
+    return msg.trim();
+  };
+  const disparar=()=>{
+    const txt=encodeURIComponent(montarMsg());
+    window.open('https://wa.me/?text='+txt,'_blank');
+  };
+  return Div({style:{padding:'16px 16px 80px'}},
+    Div({style:{fontWeight:800,fontSize:18,color:C.gold,marginBottom:6}},'🎈 Lançamento de Balões'),
+    Div({style:{fontSize:12,color:C.dim,marginBottom:20}},'Selecione um ou mais modelos, marque os tamanhos e a cor de cada um.'),
+    Div({style:{...cs(),padding:'14px 16px',marginBottom:16}},
+      Div({style:{fontWeight:700,marginBottom:10,fontSize:13}},'Modelos'),
+      Div({style:{display:'flex',flexWrap:'wrap',gap:8}},
+        MODELOS_BALAO.map(m=>{
+          const on=!!selecionados[m];
+          return Btn({key:m,onClick:()=>on?removerModelo(m):addModelo(m),style:bs({background:on?C.gold:C.card2,color:on?'#000':C.txt,border:'1px solid '+(on?C.gold:C.bdr),padding:'8px 16px',fontSize:13})},(on?'✓ ':'+ ')+m);
+        })
+      )
+    ),
+    modelosAtivos.length===0?Div({style:{textAlign:'center',padding:'40px',color:C.dim}},'Selecione um modelo acima para começar. 🎈')
+    :modelosAtivos.map(m=>e(ModeloBalaoCard,{
+      key:m,modelo:m,sel:selecionados[m],
+      onToggleTam:t=>toggleTam(m,t),
+      onCor:v=>setCor(m,v),
+      onRemover:()=>removerModelo(m)
+    })),
+    modelosAtivos.length>0&&Btn({
+      onClick:disparar,disabled:!temAlgo,
+      style:bs({background:temAlgo?'#25D366':'#333',color:temAlgo?'#fff':C.dim,width:'100%',padding:'14px',fontSize:14,marginTop:8,display:'flex',alignItems:'center',justifyContent:'center',gap:8,opacity:temAlgo?1:0.6})
+    },Span({style:{fontSize:18}},'📱'),'Disparar no WhatsApp')
+  );
+}
 /* ════ PEGUE E MONTE TAB ════ */
 function PMTab({contratos,onSel,onAdd,kits,onUpd}){
   const [sq,setSq]=useState('');
@@ -966,14 +1034,11 @@ function PMTab({contratos,onSel,onAdd,kits,onUpd}){
   const totV=atv.reduce((s,c)=>s+(c.valor_servico||0),0);
   const totE=atv.reduce((s,c)=>s+(c.entrada||0),0);
   const [shKitsMgr,setShKitsMgr]=useState(false);
-
   return Div({style:{padding:'12px 12px 80px'}},
-    // Botão gerenciar kits
     Btn({onClick:()=>setShKitsMgr(!shKitsMgr),style:bs({background:shKitsMgr?C.yelB:C.gold+'22',color:C.gold,border:'1px solid '+C.gold+'44',width:'100%',padding:'11px',fontSize:13,marginBottom:12,display:'flex',alignItems:'center',justifyContent:'center',gap:8})},
       Span({style:{fontSize:16}},'🎁'),shKitsMgr?'Fechar Gerenciador de Kits':'⚙️ Gerenciar Kits'
     ),
     shKitsMgr&&e(KitsTab,{kits,onUpd,onClose:()=>setShKitsMgr(false)}),
-
     Div({style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}},
       [['📦 CONTRATOS',atv.length+' ativos',C.pnk,'Pegue e Monte'],['💰 VALOR TOTAL',fmt(totV),C.gold,'soma dos itens'],['✅ ENTRADAS',fmt(totE),C.grn,'já recebido'],['⏳ A RECEBER',fmt(totV-totE),C.org,'saldo pendente']].map(([l,v,c,s],i)=>
         Div({key:i,style:cs({padding:'14px 16px'})},
@@ -1016,7 +1081,6 @@ function PMTab({contratos,onSel,onAdd,kits,onUpd}){
     )
   );
 }
-
 /* ════ PEGUE E MONTE MODAL ════ */
 function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
   const [lc,setLc]=useState({...c,itens:[...(c.itens||[])],gastos_extras:[...(c.gastos_extras||[])]});
@@ -1025,13 +1089,10 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
   const [nD,setND]=useState('');
   const [nV,setNV]=useState('');
   const [sv,setSv]=useState(false);
-
   const totItens=lc.valor_servico||0;
   const totGastos=tge(lc);
   const sl=totItens-(lc.entrada||0)-totGastos;
-
   const sv2=async u=>{setLc(u);await onSave(u);};
-
   const openWA=()=>{if(lc.tel)window.open('https://wa.me/55'+lc.tel.replace(/\D/g,''),'_blank');};
   const openCal=()=>{
     const t=pd(lc.data_retirada);if(!t)return;
@@ -1040,7 +1101,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
     window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('📦 Pegue e Monte - '+lc.nome)+'&dates='+ds+'/'+ds,'_blank');
   };
   const openMaps=()=>window.open('https://maps.google.com/?q='+encodeURIComponent((lc.bairro||'')+', Rio de Janeiro, RJ'),'_blank');
-
   const gerarContrato=()=>{
     const w=window.open('','_blank');
     const fR=v=>'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});
@@ -1066,11 +1126,8 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
       +'</body></html>';
     w.document.write(html);w.document.close();
   };
-
   return Div({style:{position:'fixed',inset:0,background:'rgba(0,0,0,.92)',zIndex:300,overflowY:'auto',padding:'16px 12px'},onClick:ev=>{if(ev.target===ev.currentTarget)onClose();}},
     Div({style:{...cs(),maxWidth:480,margin:'0 auto',overflow:'hidden'}},
-
-      /* Header */
       Div({style:{background:lc.finalizado?C.telB:C.card2,padding:'16px 18px',borderBottom:'1px solid '+C.bdr}},
         Div({style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}},
           Div(null,
@@ -1086,20 +1143,14 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
           Btn({onClick:onClose,style:bs({background:'transparent',color:C.dim,fontSize:22,padding:'4px 8px'})},'✕')
         )
       ),
-
       Div({style:{padding:'16px 18px'}},
-
-        /* 4 botões */
         Div({style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:8,marginBottom:20}},
           Btn({onClick:openWA,disabled:!lc.tel,style:bs({background:'#25D366',color:'#fff',padding:'10px 4px',fontSize:11,opacity:!lc.tel?0.4:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3})},Span({style:{fontSize:18}},'📱'),'WhatsApp'),
           Btn({onClick:openCal,style:bs({background:C.blu,color:'#fff',padding:'10px 4px',fontSize:11,display:'flex',flexDirection:'column',alignItems:'center',gap:3})},Span({style:{fontSize:18}},'🔔'),'Lembrete'),
           Btn({onClick:openMaps,disabled:!lc.bairro,style:bs({background:'#4285F4',color:'#fff',padding:'10px 4px',fontSize:11,opacity:!lc.bairro?0.4:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3})},Span({style:{fontSize:18}},'🗺️'),'Maps'),
           Btn({onClick:gerarContrato,style:bs({background:C.pur,color:'#fff',padding:'10px 4px',fontSize:11,display:'flex',flexDirection:'column',alignItems:'center',gap:3})},Span({style:{fontSize:18}},'📄'),'Contrato')
         ),
-
         lc.tel&&e('a',{href:'tel:'+lc.tel,style:{display:'flex',alignItems:'center',gap:8,color:C.grn,fontSize:13,fontWeight:600,marginBottom:16,textDecoration:'none'}},'📞 ',lc.tel),
-
-        /* Kit Selector */
         Div({style:{marginBottom:16}},
           Btn({onClick:()=>setShKit(!shKit),style:bs({background:shKit?C.yelB:C.gold+'22',color:C.gold,border:'1px solid '+C.gold+'44',width:'100%',padding:'11px',fontSize:13,display:'flex',alignItems:'center',justifyContent:'center',gap:8})},
             Span({style:{fontSize:16}},'🎁'),shKit?'Fechar Kits':'Selecionar Kit Pronto'
@@ -1109,8 +1160,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
             setShKit(false);
           }})
         ),
-
-        /* Financeiro */
         Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:10}},'Financeiro'),
         Div({style:{...cs({background:C.card2}),padding:'14px 16px',marginBottom:16}},
           Div({style:{marginBottom:10}},
@@ -1130,8 +1179,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
             Span({style:{fontWeight:800,fontSize:14,color:sl>0?C.red:C.grn}},fmt(Math.max(0,sl)))
           )
         ),
-
-        /* Acervo Utilizado */
         Div({style:{marginBottom:16}},
           Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}},
             Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase'}},'📦 Acervo Utilizado'),
@@ -1148,8 +1195,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
             )
           )
         ),
-
-        /* Gastos Extras */
         Div({style:{marginBottom:16}},
           Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:10}},'💸 Gastos Extras (fora do acervo)'),
           (lc.gastos_extras||[]).length===0?Div({style:{fontSize:12,color:C.dim,marginBottom:10}},'Nenhum gasto registrado')
@@ -1175,16 +1220,12 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
             },sv?'…':'+')
           )
         ),
-
-        /* Resultado */
         Div({style:{background:sl<=0?C.grnB:C.redB,border:'2px solid '+(sl<=0?C.grn:C.red),borderRadius:12,padding:'16px',textAlign:'center',marginBottom:16}},
           Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:2,textTransform:'uppercase',marginBottom:4}},'Resultado do Contrato'),
           Div({style:{fontSize:22,fontWeight:900,color:sl<=0?C.grn:C.red,marginBottom:2}},sl<=0?'▲ PAGO':'▼ PENDENTE'),
           Div({style:{fontSize:24,fontWeight:900,color:sl<=0?C.grn:C.red}},fmt(Math.abs(sl))),
           Div({style:{fontSize:11,color:C.dim,marginTop:6}},'Itens: '+fmt(totItens)+' − Entrada: '+fmt(lc.entrada||0)+' − Extras: '+fmt(totGastos)+' = '+fmt(sl))
         ),
-
-        /* Multas */
         Div({style:{marginBottom:16}},
           Div({style:{fontSize:11,fontWeight:700,color:C.dim,letterSpacing:1,textTransform:'uppercase',marginBottom:8}},'📝 Anotações'),
           Txt({
@@ -1195,7 +1236,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
             style:{...is(),resize:'vertical',minHeight:70,fontSize:13,lineHeight:1.6}
           })
         ),
-
         Div({style:{...cs({background:C.card2,border:'1px solid '+C.red+'33'}),padding:'14px 16px',marginBottom:12}},
           Div({style:{fontSize:11,fontWeight:700,color:C.red,letterSpacing:1,textTransform:'uppercase',marginBottom:10}},'⚠️ Multas e Penalidades'),
           Div({style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}},
@@ -1210,7 +1250,6 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
           ),
           Txt({value:lc.obs_multa||'',placeholder:'Observacoes...',onChange:ev=>setLc(p=>({...p,obs_multa:ev.target.value})),onBlur:async()=>await sv2({...lc}),style:{...is(),resize:'vertical',minHeight:50,fontSize:13}})
         ),
-
         Btn({onClick:async()=>await sv2({...lc,finalizado:!lc.finalizado}),style:bs({width:'100%',padding:'12px',marginBottom:10,fontSize:14,background:lc.finalizado?C.gryB:C.telB,color:lc.finalizado?C.gry:C.tel,border:'1px solid '+(lc.finalizado?C.gry:C.tel)+'44'})},lc.finalizado?'↩️ Reabrir Contrato':'✅ Marcar como Finalizado'),
         Div({style:{display:'flex',gap:8}},
           Btn({onClick:onEdit,style:bs({flex:1,background:C.gold,color:'#000',padding:'13px',fontSize:14})},'✏️ Editar'),
@@ -1220,24 +1259,17 @@ function PMModal({c,onClose,onEdit,onDel,onSave,acervo,kits}){
     )
   );
 }
-
 /* ════ PM FORM ════ */
 function PMForm({init,onSave,onClose,title}){
   const [f,setF]=useState(init);
   const set=(k,v)=>setF(p=>({...p,[k]:v}));
   const ok=f.nome?.trim()&&f.data_retirada?.trim();
-
-  // Convert DD/MM/YYYY <-> YYYY-MM-DD for date input
-  const toISO=d=>{if(!d)return '';const p=d.split('/');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:d;};
-  const toBR=d=>{if(!d)return '';const p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d;};
-
   return Div({style:{position:'fixed',inset:0,background:'rgba(0,0,0,.92)',zIndex:350,overflowY:'auto',padding:'16px 12px'},onClick:ev=>{if(ev.target===ev.currentTarget)onClose();}},
     Div({style:{...cs(),maxWidth:440,margin:'0 auto',padding:'20px 18px'}},
       Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}},
         Div({style:{fontWeight:800,fontSize:18,color:C.pnk}},title),
         Btn({onClick:onClose,style:bs({background:'transparent',color:C.dim,fontSize:22,padding:'4px 8px'})},'✕')
       ),
-
       Div({style:{marginBottom:10}},
         Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Nome *'),
         Inp({type:'text',value:f.nome||'',onChange:ev=>set('nome',ev.target.value),style:is()})
@@ -1250,7 +1282,6 @@ function PMForm({init,onSave,onClose,title}){
         Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'Bairro / Endereço'),
         Inp({type:'text',value:f.bairro||'',onChange:ev=>set('bairro',ev.target.value),style:is()})
       ),
-
       Div({style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}},
         Div(null,
           Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'📅 Data Retirada *'),
@@ -1261,12 +1292,10 @@ function PMForm({init,onSave,onClose,title}){
           Inp({type:'date',value:toISO(f.data_devolucao||''),onChange:ev=>set('data_devolucao',toBR(ev.target.value)),style:{...is(),colorScheme:'dark',cursor:'pointer'}})
         )
       ),
-
       Div({style:{marginBottom:10}},
         Lbl({style:{fontSize:12,color:C.dim,display:'block',marginBottom:4}},'💰 Valor Total do Serviço (R$) *'),
         Inp({type:'number',value:f.valor_servico||'',placeholder:'Ex: 500,00',onChange:ev=>set('valor_servico',ev.target.value===''?0:+ev.target.value),style:{...is(),border:'1px solid '+C.gold},inputMode:'decimal'})
       ),
-
       Div({style:{display:'flex',gap:8,marginTop:20}},
         Btn({onClick:()=>onSave({...f,itens:f.itens||[],gastos_extras:f.gastos_extras||[],valor_servico:+f.valor_servico||0,entrada:f.entrada||0,multa_avaria:f.multa_avaria||0,multa_atraso:f.multa_atraso||0,obs_multa:f.obs_multa||'',finalizado:false}),disabled:!ok,style:bs({flex:1,background:ok?C.pnk:'#333',color:'#fff',padding:'13px',fontSize:14})},'💾 Salvar'),
         Btn({onClick:onClose,style:bs({flex:1,background:C.card2,color:C.dim,border:'1px solid '+C.bdr,padding:'13px'})},'Cancelar')
@@ -1274,7 +1303,6 @@ function PMForm({init,onSave,onClose,title}){
     )
   );
 }
-
 /* ════ BACKUP ════ */
 function Backup({clients,session,onRel,loading}){
   const exp=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(clients,null,2)],{type:'application/json'}));a.download='celebrar-'+new Date().toISOString().slice(0,10)+'.json';a.click();};
@@ -1291,8 +1319,6 @@ function Backup({clients,session,onRel,loading}){
     )
   );
 }
-
-
 /* ════ KITS TAB ════ */
 function KitsTab({kits,onUpd,onClose}){
   const [newCat,setNewCat]=useState('');
@@ -1301,7 +1327,6 @@ function KitsTab({kits,onUpd,onClose}){
   const [newKitVal,setNewKitVal]=useState({});
   const [newKitDesc,setNewKitDesc]=useState({});
   const [sv,setSv]=useState(false);
-
   const cats=['Básico','Prata','Ouro','Diamante'];
   const catColors={
     'Básico':{c:C.grn,bg:C.grnB,icon:'🥉'},
@@ -1309,7 +1334,6 @@ function KitsTab({kits,onUpd,onClose}){
     'Ouro':{c:C.gold,bg:C.yelB,icon:'🥇'},
     'Diamante':{c:C.blu,bg:C.bluB,icon:'💎'}
   };
-
   const addKit=async(cat)=>{
     const nome=(newKit[cat]||'').trim();
     const val=+newKitVal[cat]||0;
@@ -1323,16 +1347,13 @@ function KitsTab({kits,onUpd,onClose}){
     setNewKitDesc(p=>({...p,[cat]:''}));
     setSv(false);
   };
-
   const removeKit=async id=>await onUpd(kits.filter(k=>k.id!==id));
-
   return Div({style:{...cs({border:'1px solid '+C.gold+'44'}),padding:'16px',marginBottom:16}},
     Div({style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}},
       Div({style:{fontWeight:800,fontSize:16,color:C.gold}},'🎁 Kits Disponíveis'),
       onClose&&Btn({onClick:onClose,style:bs({background:'transparent',color:C.dim,fontSize:18,padding:'4px 8px'})},'✕')
     ),
     Div({style:{fontSize:12,color:C.dim,marginBottom:16}},'Cadastre kits prontos por categoria para oferecer no Pegue e Monte'),
-
     cats.map(cat=>{
       const cc=catColors[cat];
       const catKits=kits.filter(k=>k.categoria===cat);
@@ -1346,7 +1367,6 @@ function KitsTab({kits,onUpd,onClose}){
           Span({style:{color:C.dim}},exp[cat]?'▲':'▼')
         ),
         exp[cat]&&Div({style:{padding:'14px 16px'}},
-          // Add kit form
           Div({style:{...cs({background:C.card2}),padding:'12px',marginBottom:12}},
             Div({style:{fontWeight:700,fontSize:12,color:cc.c,marginBottom:8}},'+ Novo Kit '+cat),
             Inp({placeholder:'Nome do kit...',value:newKit[cat]||'',onChange:ev=>setNewKit(p=>({...p,[cat]:ev.target.value})),style:{...is(),marginBottom:8}}),
@@ -1354,7 +1374,6 @@ function KitsTab({kits,onUpd,onClose}){
             Txt({placeholder:'Descrição do kit (itens inclusos...)',value:newKitDesc[cat]||'',onChange:ev=>setNewKitDesc(p=>({...p,[cat]:ev.target.value})),style:{...is(),resize:'vertical',minHeight:60,fontSize:13,marginBottom:8}}),
             Btn({onClick:()=>addKit(cat),disabled:sv||!(newKit[cat]||'').trim(),style:bs({background:cc.c,color:'#000',width:'100%',padding:'10px'})},sv?'…':'+ Adicionar Kit')
           ),
-          // Kit list
           catKits.length===0
             ?Div({style:{fontSize:12,color:C.dim,textAlign:'center',padding:'16px 0'}},'Nenhum kit cadastrado nesta categoria.')
             :Div({style:{display:'flex',flexDirection:'column',gap:8}},
@@ -1378,7 +1397,6 @@ function KitsTab({kits,onUpd,onClose}){
     })
   );
 }
-
 /* ════ KIT SELECTOR (inside PMModal) ════ */
 function KitSelector({kits,onSelect,onClose}){
   const cats=['Básico','Prata','Ouro','Diamante'];
@@ -1416,8 +1434,6 @@ function KitSelector({kits,onSelect,onClose}){
         })
   );
 }
-
-
 /* ════ SENHA MODAL ════ */
 function SenhaModal({onClose,onConfirm,erro}){
   const [s,setS]=useState('');
@@ -1448,7 +1464,6 @@ function SenhaModal({onClose,onConfirm,erro}){
     )
   );
 }
-
 /* ════ APP PRINCIPAL ════ */
 function App(){
   const [ses,setSes]=useState(null);
@@ -1469,104 +1484,84 @@ function App(){
   const [editPM,setEditPM]=useState(null);
   const [conf,setConf]=useState(null);
   const [msg,setMsg]=useState('');
-
   useEffect(()=>{
     sb.auth.getSession().then(({data:{session}})=>{setSes(session);setAL(false);});
     const{data:{subscription}}=sb.auth.onAuthStateChange((_,s)=>{setSes(s);setAL(false);});
     return()=>subscription.unsubscribe();
   },[]);
-
   useEffect(()=>{if(ses){loadC();loadPM();loadAc();loadKits();}},[ ses]);
-
   const loadC=async()=>{
     setDbL(true);
     const{data,error}=await sb.from('clientes').select('*').order('data_evento',{ascending:true});
     if(!error&&data)setClients(data.map(r=>({id:r.id,nome:r.nome,tel:r.telefone,bairro:r.bairro,data:r.data_evento,tipo:r.tipo,vf:r.valor_total,vp:r.valor_recebido,gastos:r.gastos||[],acervo_utilizado:r.acervo_utilizado||[],finalizado:r.finalizado||false,anotacoes:r.anotacoes||''})));
     setDbL(false);
   };
-
   const loadPM=async()=>{
     const{data,error}=await sb.from('pegue_monte').select('*').order('created_at',{ascending:false});
     if(!error&&data)setContratos(data.map(r=>({...r,itens:r.itens||[],gastos_extras:r.gastos_extras||[],valor_servico:r.valor_servico||0,entrada:r.entrada||0,anotacoes:r.anotacoes||''})));
   };
-
   const loadAc=async()=>{
     const{data,error}=await sb.from('acervo').select('*').limit(1);
     if(!error&&data&&data.length>0)setAcervo(data[0].materiais||[]);
   };
-
   const saveAc=async mat=>{
     setAcervo(mat);
     const{data:ex}=await sb.from('acervo').select('id').limit(1);
     if(ex&&ex.length>0)await sb.from('acervo').update({materiais:mat}).eq('id',ex[0].id);
     else await sb.from('acervo').insert([{materiais:mat}]);
   };
-
   const loadKits=async()=>{
     const{data,error}=await sb.from('kits_pm').select('*').limit(1);
     if(!error&&data&&data.length>0)setKits(data[0].items||[]);
   };
-
   const saveKits=async items=>{
     setKits(items);
     const{data:ex}=await sb.from('kits_pm').select('id').limit(1);
     if(ex&&ex.length>0)await sb.from('kits_pm').update({items}).eq('id',ex[0].id);
     else await sb.from('kits_pm').insert([{items}]);
   };
-
   const toast=(m,d=3000)=>{setMsg(m);setTimeout(()=>setMsg(''),d);};
-
   const pedirSenha=()=>{setSenhaErr(false);setShSenha(true);};
   const verificarSenha=(s)=>{
     if(s==='311249'){setShSenha(false);setSenhaErr(false);setShAdd(true);}
     else{setSenhaErr(true);}
   };
-
   const addClient=async c=>{
     const{data,error}=await sb.from('clientes').insert([{nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:false,anotacoes:c.anotacoes||''}]).select().single();
     if(!error){setClients(p=>[...p,{id:data.id,nome:data.nome,tel:data.telefone,bairro:data.bairro,data:data.data_evento,tipo:data.tipo,vf:data.valor_total,vp:data.valor_recebido,gastos:data.gastos||[],acervo_utilizado:data.acervo_utilizado||[],finalizado:false}]);toast('✅ Evento adicionado!');}
     else toast('❌ Erro: '+error.message);
     setShAdd(false);
   };
-
   const saveEdit=async c=>{
     const{error}=await sb.from('clientes').update({nome:c.nome,telefone:c.tel,bairro:c.bairro,data_evento:c.data,tipo:c.tipo,valor_total:c.vf,valor_recebido:c.vp||0,gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||''}).eq('id',c.id);
     if(!error){setClients(p=>p.map(x=>x.id===c.id?{...c}:x));toast('✅ Salvo!');}
     else toast('❌ Erro: '+error.message);
     setEditC(null);
   };
-
   const saveCF=async c=>{
     await sb.from('clientes').update({gastos:c.gastos||[],acervo_utilizado:c.acervo_utilizado||[],finalizado:c.finalizado||false,anotacoes:c.anotacoes||''}).eq('id',c.id);
     setClients(p=>p.map(x=>x.id===c.id?{...c}:x));
   };
-
   const addPM=async c=>{
     const{data,error}=await sb.from('pegue_monte').insert([{nome:c.nome,telefone:c.tel,bairro:c.bairro,data_retirada:c.data_retirada,data_devolucao:c.data_devolucao,valor_servico:c.valor_servico||0,itens:c.itens||[],gastos_extras:c.gastos_extras||[],entrada:c.entrada||0,multa_avaria:c.multa_avaria||0,multa_atraso:c.multa_atraso||0,obs_multa:c.obs_multa||'',anotacoes:'',finalizado:false}]).select().single();
     if(!error){setContratos(p=>[{...data,itens:data.itens||[],gastos_extras:data.gastos_extras||[]}, ...p]);toast('✅ Contrato criado!');}
     else toast('❌ Erro: '+error.message);
     setShAddPM(false);
   };
-
   const savePM=async c=>{
     const{error}=await sb.from('pegue_monte').update({nome:c.nome,telefone:c.tel,bairro:c.bairro,data_retirada:c.data_retirada,data_devolucao:c.data_devolucao,valor_servico:c.valor_servico||0,itens:c.itens||[],gastos_extras:c.gastos_extras||[],entrada:c.entrada||0,multa_avaria:c.multa_avaria||0,multa_atraso:c.multa_atraso||0,obs_multa:c.obs_multa||'',anotacoes:c.anotacoes||'',finalizado:c.finalizado||false}).eq('id',c.id);
     if(!error){setContratos(p=>p.map(x=>x.id===c.id?{...c}:x));if(selPM?.id===c.id)setSelPM(c);}
     else toast('❌ Erro ao salvar');
   };
-
   const delItem=async(type,id)=>{
     if(type==='ev'){await sb.from('clientes').delete().eq('id',id);setClients(p=>p.filter(x=>x.id!==id));setSel(null);}
     else{await sb.from('pegue_monte').delete().eq('id',id);setContratos(p=>p.filter(x=>x.id!==id));setSelPM(null);}
     toast('🗑️ Removido');setConf(null);
   };
-
   const logout=async()=>{await sb.auth.signOut();setClients([]);setContratos([]);setAcervo([]);};
-
   if(aL)return Div({style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',gap:12,color:C.dim}},Div({style:{fontSize:48}},'🎉'),Div(null,'Carregando...'));
   if(!ses)return e(Login);
-
-  const tabs=[{k:'dashboard',l:'📊 Dashboard'},{k:'eventos',l:'🎉 Eventos'},{k:'pegue-monte',l:'📦 Pegue e Monte'},{k:'acervo',l:'🗃️ Acervo'},{k:'backup',l:'💾 Backup'}];
-
+  const tabs=[{k:'dashboard',l:'📊 Dashboard'},{k:'eventos',l:'🎉 Eventos'},{k:'pegue-monte',l:'📦 Pegue e Monte'},{k:'baloes',l:'🎈 Balões'},{k:'acervo',l:'🗃️ Acervo'},{k:'backup',l:'💾 Backup'}];
   return Div({style:{minHeight:'100vh',background:C.bg}},
     msg&&Div({style:{position:'fixed',top:12,left:'50%',transform:'translateX(-50%)',background:msg.startsWith('✅')?C.grn:msg.startsWith('❌')?C.red:C.org,color:'#fff',padding:'10px 22px',borderRadius:20,fontWeight:700,fontSize:13,zIndex:9000,whiteSpace:'nowrap',boxShadow:'0 4px 20px rgba(0,0,0,.4)'}},msg),
     Div({style:{background:C.card2,borderBottom:'1px solid '+C.bdr,padding:'12px 16px',position:'sticky',top:0,zIndex:100,display:'flex',alignItems:'center',gap:12}},
@@ -1580,6 +1575,7 @@ function App(){
     tab==='dashboard'&&e(Dash,{clients}),
     tab==='eventos'&&e(Eventos,{clients,onSel:setSel,onAdd:pedirSenha}),
     tab==='pegue-monte'&&e(PMTab,{contratos,onSel:setSelPM,onAdd:()=>setShAddPM(true),kits,onUpd:saveKits}),
+    tab==='baloes'&&e(BaloesTab),
     tab==='acervo'&&e(AcervoTab,{acervo,onUpd:saveAc,clients}),
     tab==='backup'&&e(Backup,{clients,session:ses,onRel:loadC,loading:dbL}),
     tab==='eventos'&&Btn({onClick:pedirSenha,style:{position:'fixed',bottom:24,right:20,width:56,height:56,borderRadius:'50%',background:C.gold,color:'#000',border:'none',fontSize:30,cursor:'pointer',zIndex:200,boxShadow:'0 4px 20px '+C.gold+'66',display:'flex',alignItems:'center',justifyContent:'center'}},'+'),
@@ -1604,8 +1600,10 @@ function App(){
     )
   );
 }
-
 ReactDOM.createRoot(document.getElementById('root')).render(e(App));
 </script>
+</body>
+</html>
+
 </body>
 </html>
